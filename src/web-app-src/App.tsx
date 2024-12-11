@@ -42,11 +42,21 @@ function NavigationBar() {
 
 //TBC
 function DecksViewer() {
+    const [decks, setDecks] = useState({});
+
+    useEffect(() => {
+        const ready = async () => {
+            setDecks(await window.electronAPI.requestDecks());
+        }
+        ready();
+    })
+    
+    const readyDecks = Object.keys(decks).map(i => <li>{i}</li>);
+
     return (
         <>
             <ul>
-                <li>test</li>
-                <li>test2</li>
+                {readyDecks}
             </ul>
         </>
     )
@@ -55,10 +65,23 @@ function DecksViewer() {
 
 
 function CardEditor() {
+    const [cardFront, setCardFront] = useState("");
+    const [cardBack, setCardBack] = useState("");
+
+    const addNewCard = () => {
+        const addCard = async () => {
+            await window.electronAPI.addNewCard("testing",cardFront,cardBack);
+        }
+        addCard();
+        console.log("COMPLETE");
+    }
+
+
     return (
         <>
-            <LatexEditor title={'Card Front'}/>
-            <LatexEditor title={'Card Back'}/>
+            <LatexEditor title={'Card Front'} cardValueSetter={setCardFront} />
+            <LatexEditor title={'Card Back'} cardValueSetter={setCardBack} />
+            <button onClick={() => addNewCard()}>Create Card</button>
         </>
     )
 }
@@ -78,6 +101,7 @@ function LatexEditor(props:any) {
                 <div ref={ref}></div>
                 <textarea onChange={event => {
                     setInputValue(event.target.value);
+                    props.cardValueSetter(event.target.value);
                     katex.render(String.raw`${inputValue}`,ref.current, {throwOnError:false})
                 }} />
             </div>
