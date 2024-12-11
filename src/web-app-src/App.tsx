@@ -70,7 +70,7 @@ function CardEditor() {
 
     const addNewCard = () => {
         const addCard = async () => {
-            await window.electronAPI.addNewCard("testing",cardFront,cardBack);
+            await window.electronAPI.addNewCard("meowlrjghdhgk",cardFront,cardBack);
         }
         addCard();
         console.log("COMPLETE");
