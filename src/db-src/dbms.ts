@@ -4,25 +4,23 @@ const Database = require('better-sqlite3');
 
 const database = {
     dbObject: new Database("decks.db",{}),
+    hashTables: {},
 
-
-    tables: function() {
-        return this.dbObject.prepare("SELECT * FROM sqlite_master WHERE type='table'").all().reduce(function(map:any,obj:any) {
+    uploadTables: function() {
+        this.hashTables = this.dbObject.prepare("SELECT * FROM sqlite_master WHERE type='table'").all().reduce(function(map:any,obj:any) {
             map[obj.tbl_name] = "testing";
             return map;
         },{});
     },
 
     createNewDeck: function(deckName:string) {
-        if (!this.tables[deckName]) {
+        if (!this.hashTables[deckName]) {
             this.dbObject.prepare(`CREATE TABLE ${deckName} (ID INTEGER NOT NULL PRIMARY KEY, card_front TEXT, card_back TEXT)`).run();
-            return true;
         }
-        return false;
     },
 
     addNewCard: function(deckName:string,card_front:string,card_back:string) {
-        if (this.tables[deckName]) {
+        if (this.hashTables[deckName]) {
             this.dbObject.prepare(`REPLACE INTO ${deckName}(card_front, card_back) VALUES('${card_front}','${card_back}')`).run();
         }
     },

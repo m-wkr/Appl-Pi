@@ -1,6 +1,7 @@
 export interface IElectronAPI {
     requestDecks: () => Promise<any>,
-    addNewCard: (deckName:string,card_front:string,card_back:string) => Promise<any>
+    addNewCard: (deckName:string,card_front:string,card_back:string) => Promise<any>,
+    addNewDeck: (deckName:string) => Promise<any>
   }
   
   declare global {

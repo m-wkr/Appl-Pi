@@ -6,7 +6,7 @@ const database = require("./db-src/dbms")
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
-console.log(database.retrieveDeckCards("testing"))
+database.uploadTables();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -32,13 +32,18 @@ const createWindow = (): void => {
 
 app.whenReady().then(() => {
   ipcMain.handle("sql:requestDecks",async () => {
-    return database.tables;
+    return database.hashTables; //was db.tables
   });
   ipcMain.handle("sql:addNewCard", async (event:any, deckName:string, card_front:string, card_back:string) => {
-    console.log(deckName,card_front,card_back)
     database.addNewCard(deckName,card_front,card_back);
-    console.log(database.tables()[deckName])
+    database.uploadTables();
+    return database.hashTables;
   });
+  ipcMain.handle("sql:addNewDeck", async (event:any,deckName:string) => {
+    database.createNewDeck(deckName); 
+    database.uploadTables(); //need to be invoked every time a change is done to db or else data held is not up to date
+    return database.hashTables;
+  })
 })
 
 // This method will be called when Electron has finished
