@@ -27,6 +27,12 @@ const database = {
 
     retrieveDeckCards: function(deckName:string) {
         return this.dbObject.prepare(`SELECT * FROM ${deckName}`).all();
+    },
+
+    updateCard: function(deckName:string, card_front:string, card_back:string, card_id:number) {
+        if (this.hashTables[deckName]) {
+            this.dbObject.prepare(`UPDATE ${deckName} SET card_front = '${card_front}', card_back = '${card_back}' WHERE ID = ${card_id}`).run();
+        }
     }
 }
 

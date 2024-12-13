@@ -43,7 +43,15 @@ app.whenReady().then(() => {
     database.createNewDeck(deckName); 
     database.uploadTables(); //need to be invoked every time a change is done to db or else data held is not up to date
     return database.hashTables;
-  })
+  });
+  ipcMain.handle("sql:retrieveDeckCards", async (event:any,deckName:string) => {
+    return database.retrieveDeckCards(deckName);
+  });
+  ipcMain.handle("sql:updateCard", async (event:any, deckName:string, card_front:string, card_back:string, ID:number) => {
+    database.updateCard(deckName,card_front,card_back,ID);
+    database.uploadTables();
+    return database.hashTables;
+  });
 })
 
 // This method will be called when Electron has finished
