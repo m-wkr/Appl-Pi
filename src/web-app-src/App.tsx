@@ -51,7 +51,8 @@ function NavigationBar() {
 }
 
 function ViewCards(props:any) {
-    const readyDecks = Object.keys(props.decks).map(deck => <p onClick={() => {setSelectedDeck(deck);retrieveCards(deck)}}>{deck}</p>)
+    const readyDecks = Object.keys(props.decks).map(deck => <p onClick={() => {setSelectedDeck(deck);retrieveCards(deck)}}>{deck}</p>); 
+
     const [selectedDeck, setSelectedDeck] = useState("");
     const [cards, setCards] = useState([]);
     const readyCards = cards.map(card => <p onClick={() => setSelectedCard(card)}>{card["card_front"]}</p>);
@@ -65,12 +66,18 @@ function ViewCards(props:any) {
     }
 
 
+    useEffect(() => {
+        setSelectedCard({});
+    },[selectedDeck]) //when a new deck is selected, the current latex card editor is reset */
+
+
+
     return (
         <>
             {readyDecks}
             <h1>{selectedDeck}</h1>
             {readyCards}
-            <CardEditor deck={selectedDeck} setDeck={props.updateDecks} card={selectedCard}/>
+            <CardEditor deck={selectedDeck} setDeck={props.updateDecks} card={selectedCard} updateCards={retrieveCards}/>
         </>
     )
 }
@@ -80,18 +87,22 @@ function CardEditor(props:any) {
     const [cardFront,setCardFront] = useState(props.card.card_front);
     const [cardBack,setCardBack] = useState(props.card.card_back);
 
-    const updateCard = async () => {
-        props.setDeck(await window.electronAPI.updateCard(props.deck,cardFront,cardBack,props.card.ID));
-    }
-
     useEffect(() => {
         setCardFront(props.card.card_front);
-        setCardBack(props.card.card_back);
-    },[props.deck,props.card])
+        setCardBack(props.card.card_back)
+    },[props.card])
+
+    const updateCard = async () => {
+        props.setDeck(await window.electronAPI.updateCard(props.deck,cardFront,cardBack,props.card.ID));
+        props.updateCards(belongedDeck); //all it took to update cards...
+    }
+
+
+
 
     return (
         <>
-            <LatexEditor title={"Card Front"} cardValueSetter={setCardFront} value={props.card.card_front} />
+            <LatexEditor title={"Card Front"} cardValueSetter={setCardFront} value={cardFront} />
             <LatexEditor title={"Card Back"} cardValueSetter={setCardBack} value={props.card.card_back} />
             <button onClick={() => {
                 updateCard();
@@ -196,12 +207,14 @@ function LatexEditor(props:any) {
         setInputValue(props.value)
     },[props.value])
 
+    
+
     return (
         <>
             <div className='latex-editor'>
                 <h3 className='title'>{props.title}</h3>
                 <div ref={ref}></div>
-                <textarea defaultValue={props.value} onChange={event => { //defaultValue fixed it :D
+                <textarea defaultValue={inputValue} value={inputValue} onChange={event => { //defaultValue fixed it :D adding a default value + value prop is good practice
                     setInputValue(event.target.value);
                     props.cardValueSetter(event.target.value);
                     katex.render(String.raw`${inputValue}`,ref.current, {throwOnError:false})
