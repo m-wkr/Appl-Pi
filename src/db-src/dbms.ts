@@ -3,7 +3,7 @@ const Database = require('better-sqlite3');
 //TBC
 
 const database = {
-    dbObject: new Database("decks.db",{}),
+    dbObject: new Database("test.db",{}),
     hashTables: {},
 
     uploadTables: function() {
@@ -15,13 +15,13 @@ const database = {
 
     createNewDeck: function(deckName:string) {
         if (!this.hashTables[deckName]) {
-            this.dbObject.prepare(`CREATE TABLE ${deckName} (ID INTEGER NOT NULL PRIMARY KEY, card_front TEXT, card_back TEXT)`).run();
+            this.dbObject.prepare(`CREATE TABLE ${deckName} (ID INTEGER NOT NULL PRIMARY KEY, card_front TEXT, card_back TEXT, last_studied_time TEXT, days_until_review INTEGER)`).run();
         }
     },
 
-    addNewCard: function(deckName:string,card_front:string,card_back:string) {
+    addNewCard: function(deckName:string,card_front:string,card_back:string,last_studied_time:string) {
         if (this.hashTables[deckName]) {
-            this.dbObject.prepare(`REPLACE INTO ${deckName}(card_front, card_back) VALUES('${card_front}','${card_back}')`).run();
+            this.dbObject.prepare(`REPLACE INTO ${deckName}(card_front, card_back, last_studied_time, days_until_review) VALUES('${card_front}','${card_back}','${last_studied_time}',0)`).run();
         }
     },
 

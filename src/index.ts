@@ -34,8 +34,8 @@ app.whenReady().then(() => {
   ipcMain.handle("sql:requestDecks",async () => {
     return database.hashTables; //was db.tables
   });
-  ipcMain.handle("sql:addNewCard", async (event:any, deckName:string, card_front:string, card_back:string) => {
-    database.addNewCard(deckName,card_front,card_back);
+  ipcMain.handle("sql:addNewCard", async (event:any, deckName:string, card_front:string, card_back:string,last_studied_time:string) => {
+    database.addNewCard(deckName,card_front,card_back,last_studied_time);
     database.uploadTables();
     return database.hashTables;
   });

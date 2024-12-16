@@ -3,6 +3,7 @@ import katex from 'katex';
 import '../index.css';
 import "katex/dist/katex.min.css";
 
+//to do, fix classnames to use same typing convention. camelCasing should be utilised
 
 function App() {
     const [page,setPage] = useState("view");
@@ -19,7 +20,7 @@ function App() {
 
     return (
         <>
-            <NavigationBar />
+            <NavigationBar pageSetter={setPage}/>
             <div className='page-body'>
                 {
                     page === "add" ?
@@ -33,17 +34,18 @@ function App() {
 
 }
 
-//TBC
-function NavigationBar() {
+
+function NavigationBar(props:any) {
+
     return (
         <>
             <div className='testing-bg'></div>
             <div className='testing'></div>
             <header>
                 <nav>
-                    <p>Decks</p>
-                    <p>Add</p>
-                    <p>View Cards</p>
+                    <a onClick={() => props.pageSetter("deck")}>Decks</a>
+                    <a onClick={() => props.pageSetter("add")}>Add</a>
+                    <a onClick={() => props.pageSetter("view")}>View Cards</a>
                 </nav>
             </header>
         </>
@@ -77,9 +79,9 @@ function ViewCards(props:any) {
             {readyDecks}
             <h1>{selectedDeck}</h1>
             {readyCards}
-            <CardEditor deck={selectedDeck} setDeck={props.updateDecks} card={selectedCard} updateCards={retrieveCards}/>
+            {Object.keys(selectedCard).length ? <CardEditor deck={selectedDeck} setDeck={props.updateDecks} card={selectedCard} updateCards={retrieveCards}/> : <></>} 
         </>
-    )
+    ) //Now we can toggle the card editor view
 }
 
 function CardEditor(props:any) {
@@ -134,7 +136,11 @@ function CardAppender(props:any) {
 
     const addNewCard = () => {
         const addCard = async () => {
-            props.updateDecks(await window.electronAPI.addNewCard(selectedDeck,cardFront,cardBack));
+            //date is stored in yyyy-mm-dd format
+            const creationDate = new Date();
+            const sqlDateFormat = creationDate.toISOString().split("T")[0];
+            //console.log(new Date("2023-11-12").toISOString())
+            props.updateDecks(await window.electronAPI.addNewCard(selectedDeck,cardFront,cardBack,sqlDateFormat));
         }
         addCard();
         setCardFront("");
@@ -214,7 +220,7 @@ function LatexEditor(props:any) {
             <div className='latex-editor'>
                 <h3 className='title'>{props.title}</h3>
                 <div ref={ref}></div>
-                <textarea defaultValue={inputValue} value={inputValue} onChange={event => { //defaultValue fixed it :D adding a default value + value prop is good practice
+                <textarea  value={inputValue} onChange={event => { 
                     setInputValue(event.target.value);
                     props.cardValueSetter(event.target.value);
                     katex.render(String.raw`${inputValue}`,ref.current, {throwOnError:false})
