@@ -52,6 +52,14 @@ app.whenReady().then(() => {
     database.uploadTables();
     return database.hashTables;
   });
+  ipcMain.handle("sql:retrieveLessonCards", async (event:any, deckName:string,currentDate:string) => {
+    return database.retrieveLessonCards(deckName,currentDate);
+  });
+  ipcMain.handle("sql:updateCardDueTime", async (event:any,deckName:string,card_id:number,last_studied_time:string,days_until_review:number) => {
+    database.updateCardDueTime(deckName,card_id,last_studied_time,days_until_review);
+    database.uploadTables();
+    return database.hashTables;
+  })
 })
 
 // This method will be called when Electron has finished
