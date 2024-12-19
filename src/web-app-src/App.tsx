@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../index.css';
 import ViewCards from './components/cardViewer';
 import DecksViewer from './components/decksViewer';
@@ -14,7 +14,7 @@ function NavigationBar(props:any) {
             <div className='testing'></div>
             <header>
                 <nav>
-                    <a onClick={() => props.pageSetter("deck")}>Decks</a>
+                    <a onClick={() => {props.pageSetter("deck");props.setLessonStart(false)}}>Decks</a>
                     <a onClick={() => props.pageSetter("add")}>Add</a>
                     <a onClick={() => props.pageSetter("view")}>View Cards</a>
                 </nav>
@@ -26,7 +26,7 @@ function NavigationBar(props:any) {
 function App() {
     const [page,setPage] = useState("tee");
     const [decks, setDecks] = useState({}); //decks need to be accessed by several sub pages, so we might as well keep the value in app
-
+    const [lessonStart, setLessonStart] = useState(false);
 
     useEffect(() => {
         const ready = async () => {
@@ -38,12 +38,12 @@ function App() {
 
     return (
         <>
-            <NavigationBar pageSetter={setPage}/>
+            <NavigationBar pageSetter={setPage} setLessonStart={setLessonStart}/>
             <div className='page-body'>
                 {
                     page === "add" ? <CardAppender availableDecks={decks} updateDecks={setDecks} /> 
                     : page === "view" ? <ViewCards decks={decks} updateDecks={setDecks}/> 
-                    :  <DecksViewer availableDecks={decks} updateDecks={setDecks}/>
+                    :  <DecksViewer availableDecks={decks} updateDecks={setDecks} lessonStart={lessonStart} setLessonStart={setLessonStart}/>
                 }
             </div>
         </>

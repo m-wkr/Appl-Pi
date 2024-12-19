@@ -2,12 +2,11 @@ import {useState,useEffect} from 'react';
 
 //TBC
 function DecksViewer(props:any) {
-    const [lessonStart, setLessonStart] = useState(false);
     const [selectedDeck,setSelectedDeck] = useState("");
-    const readyDecks = Object.keys(props.availableDecks).map(i => <li onClick={() => {setSelectedDeck(i);setLessonStart(true)}}>{i}</li>);
+    const readyDecks = Object.keys(props.availableDecks).map(i => <li onClick={() => {setSelectedDeck(i);props.setLessonStart(true)}}>{i}</li>);
 
     return (
-        lessonStart ? <LessonSpace deckName={selectedDeck} returnFunction={setLessonStart} updateDecks={props.updateDecks}/> 
+        props.lessonStart ? <LessonSpace deckName={selectedDeck} returnFunction={props.setLessonStart} updateDecks={props.updateDecks}/> 
         : 
             <ul>
                 {readyDecks}
