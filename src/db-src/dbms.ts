@@ -43,7 +43,13 @@ const database = {
         if (this.hashTables[deckName]) {
             this.dbObject.prepare(`UPDATE ${deckName} SET last_studied_time = '${last_studied_time}', days_until_review = ${days_until_review} WHERE ID = ${card_id}`).run();
         } 
-    }
+    },
+
+    returnCardCount: function(deckName:string) {
+        if (this.hashTables[deckName]) {
+            return this.dbObject.prepare(`SELECT COUNT(*) FROM ${deckName}`).get()["COUNT(*)"];
+        }
+    },
 }
 
 

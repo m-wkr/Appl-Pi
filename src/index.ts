@@ -59,7 +59,10 @@ app.whenReady().then(() => {
     database.updateCardDueTime(deckName,card_id,last_studied_time,days_until_review);
     database.uploadTables();
     return database.hashTables;
-  })
+  });
+  ipcMain.handle("sql:returnCardCount",async (event:any,deckName:string) => {
+    return database.returnCardCount(deckName);
+  });
 })
 
 // This method will be called when Electron has finished

@@ -3,7 +3,13 @@ import {useState,useEffect} from 'react';
 //TBC
 function DecksViewer(props:any) {
     const [selectedDeck,setSelectedDeck] = useState("");
-    const readyDecks = Object.keys(props.availableDecks).map(i => <li onClick={() => {setSelectedDeck(i);props.setLessonStart(true)}}>{i}</li>);
+    const decks = props.availableDecks;
+    const [readyDecks,setReadyDecks] = useState([]);
+
+    useEffect(() => {
+        setReadyDecks(Object.keys(decks).map(deck => <DeckRepresentative deckName={deck} setSelectedDeck={setSelectedDeck} setLessonStart={props.setLessonStart}/>))
+    },[decks])
+
 
     return (
         props.lessonStart ? <LessonSpace deckName={selectedDeck} returnFunction={props.setLessonStart} updateDecks={props.updateDecks}/> 
@@ -13,6 +19,30 @@ function DecksViewer(props:any) {
             </ul>
     )
 };
+
+function DeckRepresentative(props:any) {
+    const deckName = props.deckName;
+    const [rowNum, setRowNum] = useState(0);
+
+    useEffect(() => {
+        window.electronAPI.returnCardCount(deckName).then(value => {
+            setRowNum(value);
+        })
+    },[])
+
+    if (rowNum) {
+        return (
+            <li onClick={() => {
+                props.setSelectedDeck(deckName);
+                props.setLessonStart(true);
+            }}>{props.deckName}</li>
+        )
+    } else {
+        return (
+            <li>{props.deckName}</li>
+        )
+    }
+}
 
 function LessonSpace(props:any) {
     const currentDate = new Date().toISOString().split("T")[0]
