@@ -21,11 +21,12 @@ function DecksViewer(props:any) {
 };
 
 function DeckRepresentative(props:any) {
+    const date = new Date().toISOString().split("T")[0];
     const deckName = props.deckName;
     const [rowNum, setRowNum] = useState(0);
 
     useEffect(() => {
-        window.electronAPI.returnCardCount(deckName).then(value => {
+        window.electronAPI.returnCardCount(deckName,date).then(value => {
             setRowNum(value);
         })
     },[])
@@ -66,7 +67,7 @@ function LessonSpace(props:any) {
     },[cardsQueue]);
 
     function completeCard() {
-        //window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].ID,currentDate,daysDue);
+        window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].ID,currentDate,4);
         setCardsQueue(cardsQueue.splice(1));
     };
 

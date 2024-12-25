@@ -44,7 +44,7 @@ function CardEditor(props:any) {
     },[props.card])
 
     const updateCard = async () => {
-        props.setDeck(await window.electronAPI.updateCard(props.deck,cardFront,cardBack,props.card.ID));
+        props.setDeck(await window.electronAPI.updateCard(props.deck,cardFront,cardBack,props.card.card_ID));
         props.updateCards(belongedDeck); //all it took to update cards...
     }
 

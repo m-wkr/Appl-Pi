@@ -8,5 +8,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     updateCard: (deckName:string,card_front:string,card_back:string,ID:number) => ipcRenderer.invoke('sql:updateCard',deckName,card_front,card_back,ID),
     retrieveLessonCards: (deckName:string,currentDate:string) => ipcRenderer.invoke('sql:retrieveLessonCards',deckName,currentDate),
     updateCardDueTime: (deckName:string,card_id:number,last_studied_time:string,days_until_review:number) => ipcRenderer.invoke('sql:updateCardDueTime',deckName,card_id,last_studied_time,days_until_review),
-    returnCardCount: (deckName:string) => ipcRenderer.invoke('sql:returnCardCount',deckName),
+    returnCardCount: (deckName:string,currentDate:string) => ipcRenderer.invoke('sql:returnCardCount',deckName,currentDate),
 })
