@@ -48,21 +48,24 @@ const database = {
 
     //set cards to be studied in daily
     setDailiesPerDeck: function(deck_name:string,currentDate:string) {
-        const dailyCardsCount = this.dbObject.prepare(`SELECT COUNT(*) FROM cards INNER JOIN daily ON cards.card_ID = daily.card_ID WHERE daily.lesson_start_date = '${currentDate}' AND deck_name = '${deck_name}' AND days_until_review <> 0`).get()["COUNT(*)"];
-        const newCardCount = this.dbObject.prepare(`SELECT COUNT(*) FROM cards INNER JOIN daily ON cards.card_ID = daily.card_ID WHERE days_until_review = 0 AND deck_name = '${deck_name}'`).get()["COUNT(*)"];
-
+        const dailyCardsCount = this.dbObject.prepare(`SELECT COUNT(*) FROM cards INNER JOIN daily ON cards.card_ID = daily.card_ID WHERE daily.lesson_start_date = '${currentDate}' AND deck_name = '${deck_name}'`).get()["COUNT(*)"];
+        //const newCardCount = this.dbObject.prepare(`SELECT COUNT(*) FROM cards INNER JOIN daily ON cards.card_ID = daily.card_ID WHERE days_until_review = 0 AND deck_name = '${deck_name}'`).get()["COUNT(*)"];
+        //console.log(deck_name + dailyCardsCount + " " + newCardCount);
 
         if (!dailyCardsCount) {
             this.dbObject.prepare(`INSERT INTO daily (card_ID, lesson_start_date) SELECT card_ID, '${currentDate}' FROM cards WHERE julianday('${currentDate}') - julianday(last_studied_time) >= days_until_review AND deck_name = '${deck_name}' AND days_until_review <> 0 ON CONFLICT(card_ID) DO NOTHING`).run();
+            //this.dbObject.prepare(`INSERT INTO daily (card_ID, lesson_start_date) SELECT card_ID, '${currentDate}' FROM cards WHERE days_until_review = 0 AND deck_name = '${deck_name}' ORDER BY card_ID LIMIT ${5-newCardCount} ON CONFLICT(card_ID) DO NOTHING`).run();
         }
-        else if (newCardCount < 5) {
-            this.dbObject.prepare(`INSERT INTO daily (card_ID, lesson_start_date) SELECT card_ID, '${currentDate}' FROM cards WHERE days_until_review = 0 AND deck_name = '${deck_name}' ORDER BY card_ID LIMIT ${5-newCardCount} ON CONFLICT(card_ID) DO NOTHING`).run();
-        }
+
+        this.dbObject.prepare(`INSERT INTO daily (card_ID, lesson_start_date) SELECT card_ID, '${currentDate}' FROM cards WHERE days_until_review = 0 AND deck_name = '${deck_name}' ORDER BY card_ID ON CONFLICT(card_ID) DO NOTHING`).run();
+
+        //ANKI DOESNT HAVE A CARD LIMIT ON NEWLY CREATED CARDS DUMBASS
     },
 
     //remove old daily cards
     deleteOldDailies: function(currentDate:string) {
-        this.dbObject.prepare(`DELETE FROM cards WHERE card_ID IN (SELECT card_ID FROM daily WHERE lesson_start_date <> '${currentDate}')`).run();
+        //this.dbObject.prepare(`DELETE FROM cards WHERE card_ID IN (SELECT card_ID FROM daily WHERE lesson_start_date <> '${currentDate}')`).run();
+        this.dbObject.prepare(`DELETE FROM daily WHERE lesson_start_date <> '${currentDate}'`).run();
     },
 
     //Select cards for lesson
@@ -86,6 +89,14 @@ const database = {
     //Return card count values
     returnCardCount: function(deck_name:string,currentDate:string) {
         return this.dbObject.prepare(`SELECT COUNT(*) FROM cards INNER JOIN daily ON cards.card_ID = daily.card_ID WHERE deck_name = '${deck_name}' AND (days_until_review = 0 OR last_studied_time <> '${currentDate}')`).get()["COUNT(*)"];
+    },
+
+    deleteCard: function(card_ID:string) {
+        this.dbObject.prepare(`DELETE FROM cards WHERE card_ID = '${card_ID}'`).run();
+    },
+
+    deleteDeck: function(deck_name:string) {
+        this.dbObject.prepare(`DELETE FROM decks WHERE deck_name = '${deck_name}'`).run();
     }
 }
 

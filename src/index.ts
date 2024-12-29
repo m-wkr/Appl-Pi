@@ -69,6 +69,16 @@ app.whenReady().then(() => {
     database.setDailiesPerDeck(deckName,currentDate);
     return database.returnCardCount(deckName,currentDate);
   });
+  ipcMain.handle("sql:deleteCard", async (event:any,card_ID:string) => {
+    database.deleteCard(card_ID);
+    database.uploadHashTable();
+    return database.decksHashtable;
+  });
+  ipcMain.handle("sql:deleteDeck", async (event:any,deck_name:string) => {
+    database.deleteDeck(deck_name);
+    database.uploadHashTable();
+    return database.decksHashtable;
+  })
 })
 
 // This method will be called when Electron has finished

@@ -9,4 +9,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     retrieveLessonCards: (deckName:string,currentDate:string) => ipcRenderer.invoke('sql:retrieveLessonCards',deckName,currentDate),
     updateCardDueTime: (deckName:string,card_id:number,last_studied_time:string,days_until_review:number) => ipcRenderer.invoke('sql:updateCardDueTime',deckName,card_id,last_studied_time,days_until_review),
     returnCardCount: (deckName:string,currentDate:string) => ipcRenderer.invoke('sql:returnCardCount',deckName,currentDate),
+    deleteDeck: (deck_name:string) => ipcRenderer.invoke('sql:deleteDeck',deck_name),
+    deleteCard: (card_ID:string) => ipcRenderer.invoke('sql:deleteCard',card_ID),
 })

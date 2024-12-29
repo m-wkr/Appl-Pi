@@ -7,6 +7,8 @@ export interface IElectronAPI {
     retrieveLessonCards: (deckName:string, currentDate:string) => Promise<any>,
     updateCardDueTime: (deckName:string,card_id:number,last_studied_time:string,days_until_review:number) => Promise<any>,
     returnCardCount: (deckName:string,currentDate:string) => Promise<any>,
+    deleteDeck: (deck_name:string) => Promise<any>,
+    deleteCard: (card_ID:string) => Promise<any>
   }
   
   declare global {

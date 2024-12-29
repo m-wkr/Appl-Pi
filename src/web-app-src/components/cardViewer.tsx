@@ -2,11 +2,33 @@ import {useState, useEffect} from 'react';
 import LatexEditor from './latexEditor';
 
 function ViewCards(props:any) {
-    const readyDecks = Object.keys(props.decks).map(deck => <p onClick={() => {setSelectedDeck(deck);retrieveCards(deck)}}>{deck}</p>); 
+    const readyDecks = Object.keys(props.decks).map(deck => 
+        <>
+        <p onClick={() => {setSelectedDeck(deck);retrieveCards(deck)}}>{deck}</p>
+        <button onClick={() => deleteDeck(deck)}>Delete Deck</button>
+        </>
+    ); 
+
+    const deleteDeck = (deck_name:string) => {
+        window.electronAPI.deleteDeck(deck_name).then(value => {
+            props.updateDecks(value);
+        })
+    }
+
+    const deleteCard = (card_ID:string) => {
+        window.electronAPI.deleteCard(card_ID).then(value => {
+            props.updateDecks(value);
+        })
+    }
 
     const [selectedDeck, setSelectedDeck] = useState("");
     const [cards, setCards] = useState([]);
-    const readyCards = cards.map(card => <p onClick={() => setSelectedCard(card)}>{card["card_front"]}</p>);
+    const readyCards = cards.map(card => 
+        <>
+        <p onClick={() => setSelectedCard(card)}>{card["card_front"]}</p>
+        <button onClick={() => {deleteCard(card["card_ID"]);retrieveCards(card["deck_name"]);setSelectedCard({})}}>Delete Card</button>
+        </>
+    );
     const [selectedCard, setSelectedCard] = useState({});
 
     const retrieveCards = (deck:string) => {
@@ -15,7 +37,6 @@ function ViewCards(props:any) {
         }
         ready();
     }
-
 
     useEffect(() => {
         setSelectedCard({});

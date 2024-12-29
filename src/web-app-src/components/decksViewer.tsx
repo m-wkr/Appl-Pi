@@ -67,7 +67,7 @@ function LessonSpace(props:any) {
     },[cardsQueue]);
 
     function completeCard() {
-        window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].ID,currentDate,4);
+        window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].card_ID,currentDate,1);
         setCardsQueue(cardsQueue.splice(1));
     };
 
@@ -93,7 +93,7 @@ function LessonSpace(props:any) {
                     } else {
                         props.returnFunction(false);
                     }
-                    props.updateDecks(window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].ID,currentDate,5))
+                    props.updateDecks(window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].card_ID,currentDate,1))
 
                 }}>Completed</button>
             </div>)
