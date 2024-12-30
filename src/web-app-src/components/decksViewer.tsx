@@ -67,9 +67,12 @@ function LessonSpace(props:any) {
     },[cardsQueue]);
 
     function completeCard() {
-        window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].card_ID,currentDate,1);
         setCardsQueue(cardsQueue.splice(1));
     };
+
+    function resetCardProgress() {
+        window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].card_ID,cardsQueue[0].days_until_review,0);
+    }
 
     function enqueueCardToBack() {
         const currentCard = cardsQueue[0];
@@ -85,20 +88,63 @@ function LessonSpace(props:any) {
         } else {
             return (<div className='lesson-space'>
                 <h1>{cardBack}</h1>
-                <button onClick={() => {enqueueCardToBack();setIsFront(true)}}>Try Again</button>
-                <button onClick={() => {
-                    if (cardsQueue.length > 1) { 
-                        completeCard();
-                        setIsFront(true) 
-                    } else {
-                        props.returnFunction(false);
-                    }
-                    props.updateDecks(window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].card_ID,currentDate,1))
+                <button onClick={() => {resetCardProgress();enqueueCardToBack();setIsFront(true)}}>Try Again</button>
+                <LessonSpaceButton 
+                    currentCard={cardsQueue[0]}
+                    timeMultiplier={1}
+                    cardsQueueLength={cardsQueue.length}
+                    currentDate={currentDate}
 
-                }}>Completed</button>
+                    completeCard={completeCard}
+                    setIsFront={setIsFront}
+                    returnFunction={props.returnFunction}
+                    updateDecks={props.updateDecks}
+                />
+                <LessonSpaceButton 
+                    currentCard={cardsQueue[0]}
+                    timeMultiplier={2}
+                    cardsQueueLength={cardsQueue.length}
+                    currentDate={currentDate}
+
+                    completeCard={completeCard}
+                    setIsFront={setIsFront}
+                    returnFunction={props.returnFunction}
+                    updateDecks={props.updateDecks}
+                />
+                <LessonSpaceButton 
+                    currentCard={cardsQueue[0]}
+                    timeMultiplier={4}
+                    cardsQueueLength={cardsQueue.length}
+                    currentDate={currentDate}
+
+                    completeCard={completeCard}
+                    setIsFront={setIsFront}
+                    returnFunction={props.returnFunction}
+                    updateDecks={props.updateDecks}
+                />
             </div>)
         }
     }
 };
 
+function LessonSpaceButton(props:any) {
+    const currentCard = props.currentCard;
+    const timeMultiplier = props.timeMultiplier;
+    const cardDaysUntilReviewInterval = (currentCard.days_until_review + 1) * timeMultiplier;
+
+
+    return (
+        <button onClick={() => {
+            if (props.cardsQueueLength > 1) { 
+                props.completeCard();
+                props.setIsFront(true) 
+            } else {
+                props.returnFunction(false);
+            }
+            props.updateDecks(window.electronAPI.updateCardDueTime(props.deckName,currentCard.card_ID,props.currentDate,cardDaysUntilReviewInterval))
+
+        }}>{cardDaysUntilReviewInterval} Days</button>
+    )
+};
+    
 export default DecksViewer;
