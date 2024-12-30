@@ -9,7 +9,7 @@ function CardAppender(props:any) {
 
     useEffect(() => {
         setSelectedDeck(Object.keys(props.availableDecks)[0])
-    },props.availableDecks)
+    },[props.availableDecks])
 
     const addNewCard = () => {
         const addCard = async () => {
@@ -37,7 +37,7 @@ function CardAppender(props:any) {
 
 function CreateNewDeck(props:any) {
     const options = Object.keys(props.availableDecks).map(deck => 
-        <option value={deck}>{deck}</option>
+        <option key={deck} value={deck}>{deck}</option>
     )
     const [newDeck, setNewDeck] = useState(true);
     const [newDeckName,setNewDeckName] = useState("");

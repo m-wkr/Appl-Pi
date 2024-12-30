@@ -7,7 +7,7 @@ function DecksViewer(props:any) {
     const [readyDecks,setReadyDecks] = useState([]);
 
     useEffect(() => {
-        setReadyDecks(Object.keys(decks).map(deck => <DeckRepresentative deckName={deck} setSelectedDeck={setSelectedDeck} setLessonStart={props.setLessonStart}/>))
+        setReadyDecks(Object.keys(decks).map(deck => <DeckRepresentative key={deck} deckName={deck} setSelectedDeck={setSelectedDeck} setLessonStart={props.setLessonStart}/>))
     },[decks])
 
 

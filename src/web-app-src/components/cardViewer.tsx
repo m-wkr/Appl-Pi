@@ -3,10 +3,10 @@ import LatexEditor from './latexEditor';
 
 function ViewCards(props:any) {
     const readyDecks = Object.keys(props.decks).map(deck => 
-        <>
-        <p onClick={() => {setSelectedDeck(deck);retrieveCards(deck)}}>{deck}</p>
-        <button onClick={() => deleteDeck(deck)}>Delete Deck</button>
-        </>
+        <div key={deck}>
+            <p onClick={() => {setSelectedDeck(deck);retrieveCards(deck)}}>{deck}</p>
+            <button onClick={() => deleteDeck(deck)}>Delete Deck</button>
+        </div>
     ); 
 
     const deleteDeck = (deck_name:string) => {
@@ -24,10 +24,10 @@ function ViewCards(props:any) {
     const [selectedDeck, setSelectedDeck] = useState("");
     const [cards, setCards] = useState([]);
     const readyCards = cards.map(card => 
-        <>
-        <p onClick={() => setSelectedCard(card)}>{card["card_front"]}</p>
-        <button onClick={() => {deleteCard(card["card_ID"]);retrieveCards(card["deck_name"]);setSelectedCard({})}}>Delete Card</button>
-        </>
+        <div key={card["card_ID"]}>
+            <p onClick={() => setSelectedCard(card)}>{card["card_front"]}</p>
+            <button onClick={() => {deleteCard(card["card_ID"]);retrieveCards(card["deck_name"]);setSelectedCard({})}}>Delete Card</button>
+        </div>
     );
     const [selectedCard, setSelectedCard] = useState({});
 
