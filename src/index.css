@@ -90,7 +90,7 @@ nav {
 .latex-editor {
   padding: 4px;
   box-sizing: content-box;
-  overflow-x: hidden;
+  overflow: auto hidden;
   border: rgb(237, 109, 83) solid 4px;
   border-radius: 5px;
   z-index: -1;
