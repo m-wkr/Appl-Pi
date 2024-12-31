@@ -1,4 +1,5 @@
 import {useState,useEffect} from 'react';
+import LatexViewer from './latexViewer';
 
 //TBC
 function DecksViewer(props:any) {
@@ -81,13 +82,13 @@ function LessonSpace(props:any) {
 
     if (cardsQueue.length) {
         if (isFront) {
-            return (<div className='lesson-space'>
-                <h1>{cardFront}</h1>
+            return (<div className='lessonSpace'>
+                <LatexViewer value={cardFront} title='Card Front'/>
                 <button onClick={() => setIsFront(false)}>Show Answer</button>
             </div>)
         } else {
-            return (<div className='lesson-space'>
-                <h1>{cardBack}</h1>
+            return (<div className='lessonSpace'>
+                <LatexViewer value={cardBack} title='Card Back' />
                 <button onClick={() => {resetCardProgress();enqueueCardToBack();setIsFront(true)}}>Try Again</button>
                 <LessonSpaceButton 
                     currentCard={cardsQueue[0]}
