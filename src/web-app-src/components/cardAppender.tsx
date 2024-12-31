@@ -39,7 +39,7 @@ function CreateNewDeck(props:any) {
     const options = Object.keys(props.availableDecks).map(deck => 
         <option key={deck} value={deck}>{deck}</option>
     )
-    const [newDeck, setNewDeck] = useState(true);
+    const [newDeck, setNewDeck] = useState(false);
     const [newDeckName,setNewDeckName] = useState("");
 
 
@@ -59,6 +59,7 @@ function CreateNewDeck(props:any) {
             <h1>Currently selected deck is {props.currentlySelected}</h1>
             <label>Select a deck</label>
             <select value={props.currentlySelected} onChange={event => {
+                console.log(event.target.value)
                     if (event.target.value !== "CND") {
                         props.changeSelected(event.target.value); //might be moved under conditional
                         setNewDeck(false);

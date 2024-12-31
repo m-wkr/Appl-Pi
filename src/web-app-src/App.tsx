@@ -33,7 +33,7 @@ function App() {
             setDecks(await window.electronAPI.requestDecks());
         }
         ready();
-    })
+    },[])
 
 
     return (
