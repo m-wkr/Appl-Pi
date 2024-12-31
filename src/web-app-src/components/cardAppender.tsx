@@ -24,13 +24,16 @@ function CardAppender(props:any) {
         setCardBack("");
     }
 
-
     return (
         <>
             <CreateNewDeck availableDecks={availableDecks} currentlySelected={selectedDeck} changeSelected={setSelectedDeck} changeDecks={props.updateDecks}/>
-            <LatexEditor title={'Card Front'} cardValueSetter={setCardFront} value={cardFront}/>
-            <LatexEditor title={'Card Back'} cardValueSetter={setCardBack} value={cardBack} />
-            <button onClick={() => addNewCard()}>Create Card</button>
+            {selectedDeck !== "C N D" ? 
+                <>
+                <LatexEditor title={'Card Front'} cardValueSetter={setCardFront} value={cardFront}/>
+                <LatexEditor title={'Card Back'} cardValueSetter={setCardBack} value={cardBack} />
+                <button onClick={() => addNewCard()}>Create Card</button>
+                </> : <></>
+            }
         </>
     )
 };
@@ -56,22 +59,21 @@ function CreateNewDeck(props:any) {
 
     return (
         <>
-            <h1>Currently selected deck is {props.currentlySelected}</h1>
             <label>Select a deck</label>
             <select value={props.currentlySelected} onChange={event => {
-                console.log(event.target.value)
-                    if (event.target.value !== "CND") {
-                        props.changeSelected(event.target.value); //might be moved under conditional
+                    if (event.target.value !== "C N D") {
                         setNewDeck(false);
                     } else {
                         setNewDeck(true);
                     }
+                    props.changeSelected(event.target.value);
                 }}>
                 {options}
-                <option value={"CND"}>Create New Deck</option> {/*TBC */}
+                <option value={"C N D"}>Create New Deck</option> {/*TBC */}
             </select>
             {newDeck ? <>
-                <input value={newDeckName} onChange={(event:any) => setNewDeckName(event.target.value)}></input><button onClick={createNewDeck}>Create New Deck</button>
+                <input value={newDeckName} onChange={(event:any) => setNewDeckName(event.target.value)}></input>
+                <button onClick={createNewDeck}>Create New Deck</button>
             </> : <></>}
         </>
     )
