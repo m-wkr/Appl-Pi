@@ -38,11 +38,11 @@ function DeckRepresentative(props:any) {
             <li onClick={() => {
                 props.setSelectedDeck(deckName);
                 props.setLessonStart(true);
-            }}>{props.deckName}</li>
+            }}>{props.deckName} <span>{rowNum} card/s due</span></li>
         )
     } else {
         return (
-            <li>{props.deckName}</li>
+            <li>{props.deckName} <span>0 cards due</span></li>
         )
     }
 }
