@@ -6,6 +6,7 @@ const {database} = require("./db-src/dbms")
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
+//Create required tables in database if not present
 database.createDecksTable();
 database.createCardDeck();
 database.createDailyDeck();

@@ -73,8 +73,10 @@ function CardEditor(props:any) {
     },[props.card])
 
     const updateCard = async () => {
-        props.setDeck(await window.electronAPI.updateCard(props.deck,cardFront,cardBack,props.card.card_ID));
-        props.updateCards(belongedDeck); //all it took to update cards...
+        if (cardFront && cardBack) {
+            props.setDeck(await window.electronAPI.updateCard(props.deck,cardFront,cardBack,props.card.card_ID));
+            props.updateCards(belongedDeck); //all it took to update cards...
+        }
     }
 
 
@@ -82,6 +84,7 @@ function CardEditor(props:any) {
 
     return (
         <>
+            <i><a target='_blank' href='https://katex.org/docs/supported.html'>See supported functions at katex.org</a></i>
             <LatexEditor title={"Card Front"} cardValueSetter={setCardFront} value={cardFront} />
             <LatexEditor title={"Card Back"} cardValueSetter={setCardBack} value={props.card.card_back} />
             <button className='changeButton' onClick={() => {

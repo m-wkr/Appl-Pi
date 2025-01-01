@@ -4,12 +4,14 @@ import LatexEditor from './latexEditor';
 
 function CardAppender(props:any) {
     const availableDecks = props.availableDecks;
-    const [selectedDeck,setSelectedDeck] = useState(undefined);
+    const [selectedDeck,setSelectedDeck] = useState("C N D");
     const [cardFront, setCardFront] = useState("");
     const [cardBack, setCardBack] = useState("");
 
     useEffect(() => {
-        setSelectedDeck(Object.keys(props.availableDecks)[0])
+        if (Object.keys(props.availableDecks)[0]) {
+            setSelectedDeck(Object.keys(props.availableDecks)[0])
+        }
     },[props.availableDecks])
 
     const addNewCard = () => {
@@ -18,7 +20,6 @@ function CardAppender(props:any) {
                 //date is stored in yyyy-mm-dd format
                 const creationDate = new Date();
                 const sqlDateFormat = creationDate.toISOString().split("T")[0];
-                //console.log(new Date("2023-11-12").toISOString())
                 props.updateDecks(await window.electronAPI.addNewCard(selectedDeck,cardFront,cardBack,sqlDateFormat));
             }
             addCard();
@@ -29,9 +30,10 @@ function CardAppender(props:any) {
 
     return (
         <div className='cardAdder'>
-            <CreateNewDeck availableDecks={availableDecks} currentlySelected={selectedDeck} changeSelected={setSelectedDeck} changeDecks={props.updateDecks}/>
+            <CreateNewDeck createNew={selectedDeck} availableDecks={availableDecks} currentlySelected={selectedDeck} changeSelected={setSelectedDeck} changeDecks={props.updateDecks}/>
             {selectedDeck !== "C N D" ? 
                 <>
+                <i><a target='_blank' href='https://katex.org/docs/supported.html'>See supported functions at katex.org</a></i>
                 <LatexEditor title={'Card Front'} cardValueSetter={setCardFront} value={cardFront}/>
                 <LatexEditor title={'Card Back'} cardValueSetter={setCardBack} value={cardBack} />
                 <div className='adder'>
@@ -47,9 +49,13 @@ function CreateNewDeck(props:any) {
     const options = Object.keys(props.availableDecks).map(deck => 
         <option key={deck} value={deck}>{deck}</option>
     )
-    const [newDeck, setNewDeck] = useState(false);
+
+    const [newDeck, setNewDeck] = useState(props.createNew === "C N D");
     const [newDeckName,setNewDeckName] = useState("");
 
+    useEffect(() => {
+        setNewDeck(props.createNew === "C N D")
+    }, [props.createNew])
 
     const createNewDeck = () => {
         if (newDeckName) {

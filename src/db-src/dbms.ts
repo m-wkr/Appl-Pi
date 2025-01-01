@@ -1,7 +1,7 @@
 const Database = require('better-sqlite3');
 
 const database = {
-    dbObject: new Database("test.db",{}),
+    dbObject: new Database("cards.db",{}),
     decksHashtable: {},
 
     //Should be used ONCE only. should be called first

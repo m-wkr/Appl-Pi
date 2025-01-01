@@ -15,3 +15,14 @@
     flex-direction: column;
     row-gap: 1em;
 }
+
+i {
+    display: flex;
+    justify-content: center;
+}
+
+i > a {
+    text-decoration: none;
+    color: grey;
+
+}
