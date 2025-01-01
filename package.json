@@ -1,6 +1,6 @@
 {
   "name": "appl_pi",
-  "productName": "Appl_Pi",
+  "productName": "appl_pi",
   "version": "1.0.0",
   "description": "Appl_Pi is a simplistic flashcards application which has built in support for LaTeX (specifically katex's implementation) to create mathematically rich revision material",
   "main": ".webpack/main",

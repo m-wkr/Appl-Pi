@@ -11,15 +11,22 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses';
 import { mainConfig } from './webpack.main.config';
 import { rendererConfig } from './webpack.renderer.config';
 
+const path = require('path');
+
+console.log("what is going on??? " + __dirname);
+
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
-    icon: './assets/icon',
+    icon: "./assets/favicon.ico",
+    extraResource: [
+      "./assets/favicon.ico",
+    ]
   },
   rebuildConfig: {},
   makers: [new MakerSquirrel({
     iconUrl: 'https://assets/favicon.ico',
-    setupIcon: './assets/favicon.ico'
+    setupIcon: path.resolve(__dirname,'assets','favicon.ico'),
   }), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
   plugins: [
     new AutoUnpackNativesPlugin({}),
