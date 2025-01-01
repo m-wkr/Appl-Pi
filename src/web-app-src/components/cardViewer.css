@@ -1,0 +1,59 @@
+.deleteButton {
+  display: inline-block;
+  background-color: rgb(237, 83, 83);
+  border-radius: 40%;
+}
+
+@keyframes deleteHover {
+  0% {
+    background-color: rgb(237, 83, 83);
+  }
+  50% {
+    background-color: rgb(104, 12, 12);
+  }
+  100% {
+    background-color: rgb(237, 83, 83);
+  }
+}
+
+.deleteButton:hover {
+  animation: deleteHover 1.4s ease-in infinite;
+}
+
+.dropDown {
+  padding-top: 1em;
+  height: calc(100vh - 102px);
+  width: 16vw;
+  overflow-y: scroll;
+  position: fixed;
+  text-align: center;
+}
+
+.cardDD {
+  left: 16vw;
+}
+
+.cardViewer {
+  display: flex;
+  column-gap: 0;
+}
+
+.changeButton {
+  width: 20em;
+  margin: auto;
+}
+
+.readySet {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+  height: 40px;
+  font-weight: 500;
+}
+
+.readySet > p {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

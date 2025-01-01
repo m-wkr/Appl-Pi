@@ -1,11 +1,12 @@
 import {useState, useEffect} from 'react';
+import './cardViewer.css';
 import LatexEditor from './latexEditor';
 
 function ViewCards(props:any) {
     const readyDecks = Object.keys(props.decks).map(deck => 
-        <div key={deck}>
+        <div className='readySet' key={deck}>
             <p onClick={() => {setSelectedDeck(deck);retrieveCards(deck)}}>{deck}</p>
-            <button onClick={() => deleteDeck(deck)}>Delete Deck</button>
+            <button className='deleteButton' onClick={() => deleteDeck(deck)}>DEL</button>
         </div>
     ); 
 
@@ -24,9 +25,9 @@ function ViewCards(props:any) {
     const [selectedDeck, setSelectedDeck] = useState("");
     const [cards, setCards] = useState([]);
     const readyCards = cards.map(card => 
-        <div key={card["card_ID"]}>
+        <div className='readySet' key={card["card_ID"]}>
             <p onClick={() => setSelectedCard(card)}>{card["card_front"]}</p>
-            <button onClick={() => {deleteCard(card["card_ID"]);retrieveCards(card["deck_name"]);setSelectedCard({})}}>Delete Card</button>
+            <button className='deleteButton' onClick={() => {deleteCard(card["card_ID"]);retrieveCards(card["deck_name"]);setSelectedCard({})}}>DEL</button>
         </div>
     );
     const [selectedCard, setSelectedCard] = useState({});
@@ -45,12 +46,19 @@ function ViewCards(props:any) {
 
 
     return (
-        <>
-            {readyDecks}
-            <h1>{selectedDeck}</h1>
+        <div className='cardViewer'>
+            <div className='dropDown'>
+                <h2>Decks</h2>
+                {readyDecks}
+            </div>
+            <div className='dropDown cardDD'>
+                <h2>Cards</h2>
             {readyCards}
+            </div>
+            <div className='latexViewer'>
             {Object.keys(selectedCard).length ? <CardEditor deck={selectedDeck} setDeck={props.updateDecks} card={selectedCard} updateCards={retrieveCards}/> : <></>} 
-        </>
+            </div>
+        </div>
     ) //Now we can toggle the card editor view
 };
 
@@ -76,9 +84,9 @@ function CardEditor(props:any) {
         <>
             <LatexEditor title={"Card Front"} cardValueSetter={setCardFront} value={cardFront} />
             <LatexEditor title={"Card Back"} cardValueSetter={setCardBack} value={props.card.card_back} />
-            <button onClick={() => {
+            <button className='changeButton' onClick={() => {
                 updateCard();
-            }}></button>
+            }}>Save Changes</button>
         </>
     )
 

@@ -1,0 +1,25 @@
+.latexEditor {
+    padding: 4px;
+    box-sizing: content-box;
+    overflow: auto hidden;
+    border: rgb(237, 109, 83) solid 4px;
+    border-radius: 5px;
+    z-index: -1;
+}
+
+.latexViewer {
+    width: 60vw;
+    margin: 4vh 0 4vw 36vw;
+    display: flex;
+    row-gap: 2em;
+    flex-direction: column;
+    position:sticky;
+}
+
+.latexDisplay {
+overflow: auto hidden;
+}
+
+textarea {
+width: 100%;
+}

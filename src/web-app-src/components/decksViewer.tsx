@@ -1,4 +1,5 @@
 import {useState,useEffect} from 'react';
+import './decksViewer.css';
 import LatexViewer from './latexViewer';
 
 //TBC
@@ -84,45 +85,49 @@ function LessonSpace(props:any) {
         if (isFront) {
             return (<div className='lessonSpace'>
                 <LatexViewer value={cardFront} title='Card Front'/>
-                <button onClick={() => setIsFront(false)}>Show Answer</button>
+                <div className='buttons'>
+                    <button onClick={() => setIsFront(false)}>Show Answer</button>
+                </div>
             </div>)
         } else {
             return (<div className='lessonSpace'>
                 <LatexViewer value={cardBack} title='Card Back' />
-                <button onClick={() => {resetCardProgress();enqueueCardToBack();setIsFront(true)}}>Try Again</button>
-                <LessonSpaceButton 
-                    currentCard={cardsQueue[0]}
-                    timeMultiplier={1}
-                    cardsQueueLength={cardsQueue.length}
-                    currentDate={currentDate}
+                <div className='buttons'>
+                    <button onClick={() => {resetCardProgress();enqueueCardToBack();setIsFront(true)}}>Try Again</button>
+                    <LessonSpaceButton 
+                        currentCard={cardsQueue[0]}
+                        timeMultiplier={1}
+                        cardsQueueLength={cardsQueue.length}
+                        currentDate={currentDate}
 
-                    completeCard={completeCard}
-                    setIsFront={setIsFront}
-                    returnFunction={props.returnFunction}
-                    updateDecks={props.updateDecks}
-                />
-                <LessonSpaceButton 
-                    currentCard={cardsQueue[0]}
-                    timeMultiplier={2}
-                    cardsQueueLength={cardsQueue.length}
-                    currentDate={currentDate}
+                        completeCard={completeCard}
+                        setIsFront={setIsFront}
+                        returnFunction={props.returnFunction}
+                        updateDecks={props.updateDecks}
+                    />
+                    <LessonSpaceButton 
+                        currentCard={cardsQueue[0]}
+                        timeMultiplier={2}
+                        cardsQueueLength={cardsQueue.length}
+                        currentDate={currentDate}
 
-                    completeCard={completeCard}
-                    setIsFront={setIsFront}
-                    returnFunction={props.returnFunction}
-                    updateDecks={props.updateDecks}
-                />
-                <LessonSpaceButton 
-                    currentCard={cardsQueue[0]}
-                    timeMultiplier={4}
-                    cardsQueueLength={cardsQueue.length}
-                    currentDate={currentDate}
+                        completeCard={completeCard}
+                        setIsFront={setIsFront}
+                        returnFunction={props.returnFunction}
+                        updateDecks={props.updateDecks}
+                    />
+                    <LessonSpaceButton 
+                        currentCard={cardsQueue[0]}
+                        timeMultiplier={4}
+                        cardsQueueLength={cardsQueue.length}
+                        currentDate={currentDate}
 
-                    completeCard={completeCard}
-                    setIsFront={setIsFront}
-                    returnFunction={props.returnFunction}
-                    updateDecks={props.updateDecks}
-                />
+                        completeCard={completeCard}
+                        setIsFront={setIsFront}
+                        returnFunction={props.returnFunction}
+                        updateDecks={props.updateDecks}
+                    />
+                </div>
             </div>)
         }
     }

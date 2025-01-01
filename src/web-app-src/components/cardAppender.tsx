@@ -1,4 +1,5 @@
 import {useState,useEffect} from 'react';
+import './cardAppender.css';
 import LatexEditor from './latexEditor';
 
 function CardAppender(props:any) {
@@ -25,16 +26,18 @@ function CardAppender(props:any) {
     }
 
     return (
-        <>
+        <div className='cardAdder'>
             <CreateNewDeck availableDecks={availableDecks} currentlySelected={selectedDeck} changeSelected={setSelectedDeck} changeDecks={props.updateDecks}/>
             {selectedDeck !== "C N D" ? 
                 <>
                 <LatexEditor title={'Card Front'} cardValueSetter={setCardFront} value={cardFront}/>
                 <LatexEditor title={'Card Back'} cardValueSetter={setCardBack} value={cardBack} />
+                <div className='adder'>
                 <button onClick={() => addNewCard()}>Create Card</button>
+                </div>
                 </> : <></>
             }
-        </>
+        </div>
     )
 };
 
@@ -58,7 +61,7 @@ function CreateNewDeck(props:any) {
     }
 
     return (
-        <>
+        <div className='adder'>
             <label>Select a deck</label>
             <select value={props.currentlySelected} onChange={event => {
                     if (event.target.value !== "C N D") {
@@ -72,10 +75,10 @@ function CreateNewDeck(props:any) {
                 <option value={"C N D"}>Create New Deck</option> {/*TBC */}
             </select>
             {newDeck ? <>
-                <input value={newDeckName} onChange={(event:any) => setNewDeckName(event.target.value)}></input>
+                <input placeholder='Your input must be unique' value={newDeckName} onChange={(event:any) => setNewDeckName(event.target.value)}></input>
                 <button onClick={createNewDeck}>Create New Deck</button>
             </> : <></>}
-        </>
+        </div>
     )
 };
 

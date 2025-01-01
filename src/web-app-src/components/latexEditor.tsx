@@ -1,5 +1,6 @@
 import katex from 'katex';
 import "katex/dist/katex.min.css";
+import "./latex.css";
 import { useState, useRef, useEffect} from 'react';
 
 function LatexEditor(props:any) {
@@ -20,9 +21,9 @@ function LatexEditor(props:any) {
 
     return (
         <>
-            <div className='latex-editor'>
+            <div className='latexEditor'>
                 <h3 className='title'>{props.title}</h3>
-                <div ref={ref}></div>
+                <div ref={ref} className='latexDisplay'></div>
                 <textarea  value={inputValue} onChange={event => { 
                     setInputValue(event.target.value);
                     props.cardValueSetter(event.target.value);

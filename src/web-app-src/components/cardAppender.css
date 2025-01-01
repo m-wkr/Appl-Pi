@@ -1,0 +1,17 @@
+.cardAdder {
+    width: 80vw;
+    margin: auto;
+    margin-top: 1em;
+}
+
+.cardAdder > * {
+    margin: 15px auto;
+}
+
+.adder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 1em;
+}

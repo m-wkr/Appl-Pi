@@ -1,5 +1,6 @@
 import katex from 'katex';
 import "katex/dist/katex.min.css";
+import "./latex.css";
 import {useRef, useEffect} from 'react';
 
 
