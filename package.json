@@ -1,8 +1,8 @@
 {
-  "name": "my-new-app",
-  "productName": "my-new-app",
+  "name": "appl_pi",
+  "productName": "Appl_Pi",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Appl_Pi is a simplistic flashcards application which has built in support for LaTeX (specifically katex's implementation) to create mathematically rich revision material",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",

@@ -17,7 +17,6 @@ function NavigationBar(props:any) {
                     <a onClick={() => props.pageSetter("add")}>Add</a>
                     <a onClick={() => props.pageSetter("view")}>View Cards</a>
                 </nav>
-                
             </header>
         </>
     )
