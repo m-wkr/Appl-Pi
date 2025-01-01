@@ -13,16 +13,18 @@ function CardAppender(props:any) {
     },[props.availableDecks])
 
     const addNewCard = () => {
-        const addCard = async () => {
-            //date is stored in yyyy-mm-dd format
-            const creationDate = new Date();
-            const sqlDateFormat = creationDate.toISOString().split("T")[0];
-            //console.log(new Date("2023-11-12").toISOString())
-            props.updateDecks(await window.electronAPI.addNewCard(selectedDeck,cardFront,cardBack,sqlDateFormat));
+        if (cardFront && cardBack) {
+            const addCard = async () => {
+                //date is stored in yyyy-mm-dd format
+                const creationDate = new Date();
+                const sqlDateFormat = creationDate.toISOString().split("T")[0];
+                //console.log(new Date("2023-11-12").toISOString())
+                props.updateDecks(await window.electronAPI.addNewCard(selectedDeck,cardFront,cardBack,sqlDateFormat));
+            }
+            addCard();
+            setCardFront("");
+            setCardBack("");
         }
-        addCard();
-        setCardFront("");
-        setCardBack("");
     }
 
     return (
