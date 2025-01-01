@@ -20,7 +20,7 @@ function CardAppender(props:any) {
                 //date is stored in yyyy-mm-dd format
                 const creationDate = new Date();
                 const sqlDateFormat = creationDate.toISOString().split("T")[0];
-                props.updateDecks(await window.electronAPI.addNewCard(selectedDeck,cardFront,cardBack,sqlDateFormat));
+                await window.electronAPI.addNewCard(selectedDeck,cardFront,cardBack,sqlDateFormat)
             }
             addCard();
             setCardFront("");
