@@ -24,7 +24,7 @@ function LatexEditor(props:any) {
             <div className='latexEditor'>
                 <h3 className='title'>{props.title}</h3>
                 <div ref={ref} className='latexDisplay'></div>
-                <textarea  value={inputValue} onChange={event => { 
+                <textarea  placeholder='Card value must not be empty' value={inputValue} onChange={event => { 
                     setInputValue(event.target.value);
                     props.cardValueSetter(event.target.value);
                     katex.render(String.raw`${inputValue}`,ref.current, {throwOnError:false,displayMode:true})
