@@ -73,7 +73,8 @@ function LessonSpace(props:any) {
     };
 
     function resetCardProgress() {
-        window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].card_ID,cardsQueue[0].days_until_review,0);
+        cardsQueue[0].days_until_review = 0;
+        window.electronAPI.updateCardDueTime(props.deckName,cardsQueue[0].card_ID,cardsQueue[0].last_studied_time,0);
     }
 
     function enqueueCardToBack() {
