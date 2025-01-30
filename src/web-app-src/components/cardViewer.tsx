@@ -3,12 +3,6 @@ import './cardViewer.css';
 import LatexEditor from './latexEditor';
 
 function ViewCards(props:any) {
-    const readyDecks = Object.keys(props.decks).map(deck => 
-        <div className='readySet' key={deck}>
-            <p onClick={() => {setSelectedDeck(deck);retrieveCards(deck)}}>{deck}</p>
-            <button className='deleteButton' onClick={() => deleteDeck(deck)}>DEL</button>
-        </div>
-    ); 
 
     const deleteDeck = (deck_name:string) => {
         window.electronAPI.deleteDeck(deck_name).then(value => {
@@ -24,20 +18,28 @@ function ViewCards(props:any) {
 
     const [selectedDeck, setSelectedDeck] = useState("");
     const [cards, setCards] = useState([]);
-    const readyCards = cards.map(card => 
-        <div className='readySet' key={card["card_ID"]}>
-            <p onClick={() => setSelectedCard(card)}>{card["card_front"]}</p>
-            <button className='deleteButton' onClick={() => {deleteCard(card["card_ID"]);retrieveCards(card["deck_name"]);setSelectedCard({})}}>DEL</button>
-        </div>
-    );
+
     const [selectedCard, setSelectedCard] = useState({});
 
     const retrieveCards = (deck:string) => {
-        const ready = async () => {
-            setCards(await window.electronAPI.retrieveDeckCards(deck));
-        }
-        ready();
+        window.electronAPI.retrieveDeckCards(deck).then(
+            event => {
+                setCards(event)
+            }
+        ) 
+
     }
+
+    const readyDecks = Object.keys(props.decks).map(deck => {
+        return <DeckUnit deck={deck} setSelectedDeck={setSelectedDeck} retrieveCards={retrieveCards} deleteDeck={deleteDeck}/>
+    }
+    ); 
+
+    const readyCards = cards.map(card => {
+        return <CardUnit card={card} setSelectedCard={setSelectedCard} retrieveCards={retrieveCards} deleteCard={deleteCard}/>
+    }
+    );
+
 
     useEffect(() => {
         setSelectedCard({});
@@ -61,6 +63,36 @@ function ViewCards(props:any) {
         </div>
     ) //Now we can toggle the card editor view
 };
+
+
+function DeckUnit(props:any) {
+    const [visibility,setVisibility] = useState(false);
+
+
+    return (<div className='readySet' key={props.deck}>
+        <p 
+        onClick={() => {props.setSelectedDeck(props.deck);props.retrieveCards(props.deck)}}
+        onContextMenu={() => {setVisibility(!visibility)}}    
+            >{props.deck}</p>
+        {visibility ? <button className='deleteButton' onClick={() => props.deleteDeck(props.deck)}>DEL</button> : <></>}
+    </div>)
+
+}
+
+function CardUnit(props:any) {
+    const [visibility, setVisibility] = useState(false);
+
+
+    return (<div className='readySet' key={props.card["card_ID"]}>
+        <p 
+        onClick={() => props.setSelectedCard(props.card)}
+        onContextMenu={() => setVisibility(!visibility)}
+        >{props.card["card_front"]}</p>
+        {visibility ? <button className='deleteButton' onClick={() => {props.deleteCard(props.card["card_ID"]);props.retrieveCards(props.card["deck_name"]);props.setSelectedCard({})}}>DEL</button> : <></> }
+    </div>)
+}
+
+
 
 function CardEditor(props:any) {
     const belongedDeck = props.deck;
