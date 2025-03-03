@@ -149,7 +149,7 @@ function LessonSpaceButton(props:any) {
                 props.returnFunction(false);
             }
             window.electronAPI.updateCardDueTime(props.deckName,currentCard.card_ID,props.currentDate,cardDaysUntilReviewInterval).then(value =>{
-                props.updateDecks(value);
+                props.currentCard.days_until_review = 0;
             })
 
         }}>{cardDaysUntilReviewInterval} Days</button>

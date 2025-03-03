@@ -30,7 +30,7 @@ function CardAppender(props:any) {
 
     return (
         <div className='cardAdder'>
-            <CreateNewDeck createNew={selectedDeck} availableDecks={availableDecks} currentlySelected={selectedDeck} changeSelected={setSelectedDeck} changeDecks={props.updateDecks}/>
+            <CreateNewDeck createNew={selectedDeck} availableDecks={props.availableDecks} currentlySelected={selectedDeck} changeSelected={setSelectedDeck} changeDecks={props.updateDecks}/>
             {selectedDeck !== "C N D" ? 
                 <>
                 <i><a target='_blank' href='https://katex.org/docs/supported.html'>See supported functions at katex.org</a></i>
@@ -59,12 +59,14 @@ function CreateNewDeck(props:any) {
 
     const createNewDeck = () => {
         if (newDeckName) {
-            const submitNewDeckName = async () => {
-                props.changeDecks(await window.electronAPI.addNewDeck(newDeckName.replace(/\s/g, "-"))); //sql requires deckNames to not have spaces, resolve that later
-            };
-            submitNewDeckName();
-            setNewDeck(false);
-            setNewDeckName("");
+
+            window.electronAPI.addNewDeck(newDeckName.replace(/\s/g, "-")).then(() => {
+                props.availableDecks[newDeckName] = 'testing';
+                props.changeDecks(props.availableDecks);
+                setNewDeck(false);
+                setNewDeckName("");
+                props.changeSelected(newDeckName);
+            })
         }
     }
 

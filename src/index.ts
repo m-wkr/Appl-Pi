@@ -29,7 +29,7 @@ const createWindow = (): void => {
     minWidth: 800,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-      devTools: false,
+      //devTools: false,
     },
   });
 
@@ -44,12 +44,10 @@ app.whenReady().then(() => {
   ipcMain.handle("sql:addNewCard", async (event:any, deckName:string, card_front:string, card_back:string,last_studied_time:string) => {
     database.addNewCard(deckName,card_front,card_back,last_studied_time);
     database.uploadHashTable();
-    return database.decksHashtable;
   });
   ipcMain.handle("sql:addNewDeck", async (event:any,deckName:string) => {
     database.createNewDeck(deckName);
     database.uploadHashTable();
-    return database.decksHashtable;
   });
   ipcMain.handle("sql:retrieveDeckCards", async (event:any,deckName:string) => {
     return database.retrieveCards(deckName);
@@ -57,7 +55,6 @@ app.whenReady().then(() => {
   ipcMain.handle("sql:updateCard", async (event:any, deckName:string, card_front:string, card_back:string, ID:number) => {
     database.updateCard(deckName,card_front,card_back,ID);
     database.uploadHashTable();
-    return database.decksHashtable;
   });
   ipcMain.handle("sql:retrieveLessonCards", async (event:any, deckName:string,currentDate:string) => {
     return database.selectLessonDailies(deckName,currentDate);
@@ -75,7 +72,6 @@ app.whenReady().then(() => {
   ipcMain.handle("sql:deleteCard", async (event:any,card_ID:string) => {
     database.deleteCard(card_ID);
     database.uploadHashTable();
-    return database.decksHashtable;
   });
   ipcMain.handle("sql:deleteDeck", async (event:any,deck_name:string) => {
     database.deleteDeck(deck_name);

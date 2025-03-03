@@ -11,9 +11,8 @@ function ViewCards(props:any) {
     }
 
     const deleteCard = (card_ID:string) => {
-        window.electronAPI.deleteCard(card_ID).then(value => {
-            props.updateDecks(value);
-        })
+        window.electronAPI.deleteCard(card_ID).then(() => {
+        });
     }
 
     const [selectedDeck, setSelectedDeck] = useState("");
@@ -106,7 +105,7 @@ function CardEditor(props:any) {
 
     const updateCard = async () => {
         if (cardFront && cardBack) {
-            props.setDeck(await window.electronAPI.updateCard(props.deck,cardFront,cardBack,props.card.card_ID));
+            await window.electronAPI.updateCard(props.deck,cardFront,cardBack,props.card.card_ID);
             props.updateCards(belongedDeck); //all it took to update cards...
         }
     }
