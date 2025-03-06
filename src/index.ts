@@ -31,7 +31,7 @@ const createWindow = (): void => {
     minWidth: 800,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-      //devTools: false,
+      devTools: false,
     },
   });
 

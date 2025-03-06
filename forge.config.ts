@@ -13,8 +13,6 @@ import { rendererConfig } from './webpack.renderer.config';
 
 const path = require('path');
 
-console.log("what is going on??? " + __dirname);
-
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
