@@ -1,7 +1,7 @@
 <div align="center">
   <img src="/assets/banner.png" alt="testing">
   <h3>Appl PI</h3>
-  <p>Write elegant notes</p>
+  <p>Write elegant notes, save time on deciphering</p>
   <img src="https://img.shields.io/badge/Language-Typescript-blue.svg?style=flat&logo=TypeScript&logoColor=FFF">
   <img src="https://img.shields.io/badge/Version-v1.0.0-green.svg">
   <img src="https://img.shields.io/badge/Build-Passing-green.svg">
