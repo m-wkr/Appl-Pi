@@ -14,6 +14,18 @@ import { rendererConfig } from './webpack.renderer.config';
 const path = require('path');
 
 const config: ForgeConfig = {
+  publishers: [{
+    name: '@electron-forge/publisher-github',
+    config: {
+      repository: {
+        owner: 'm-wkr',
+        name: 'Appl-Pi',
+      },
+      prerelease: false,
+      draft: true,
+      authToken: process.env.GITHUB_TOKEN,
+    }
+  }],
   packagerConfig: {
     asar: true,
     icon: "./assets/favicon.ico",
